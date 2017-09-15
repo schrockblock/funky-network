@@ -1,47 +1,35 @@
 // https://github.com/Quick/Quick
 
+import UIKit
 import Quick
 import Nimble
+import OHHTTPStubs
 import FunkyNetwork
+@testable import FunkyNetwork_Example
 
-class TableOfContentsSpec: QuickSpec {
+class LoginSpec: QuickSpec {
     override func spec() {
-        describe("these will fail") {
-
-            it("can do maths") {
-                expect(1) == 2
-            }
-
-            it("can read") {
-                expect("number") == "string"
-            }
-
-            it("will eventually fail") {
-                expect("time").toEventually( equal("done") )
-            }
-            
-            context("these will pass") {
-
-                it("can do maths") {
-                    expect(23) == 23
-                }
-
-                it("can read") {
-                    expect("🐮") == "🐮"
-                }
-
-                it("will eventually pass") {
-                    var time = "passing"
-
-                    DispatchQueue.main.async {
-                        time = "done"
+        describe("Login test") {
+            context("success") {
+                it("should log in successfully") {
+                    stub(condition: isHost("habitica.com")) { _ in
+                        let stubPath = OHPathForFileInBundle("login_success.json", Bundle.main)
+                        return fixture(filePath: stubPath!, headers: ["Content-Type":"application/json"])
                     }
-
-                    waitUntil { done in
-                        Thread.sleep(forTimeInterval: 0.5)
-                        expect(time) == "done"
-
-                        done()
+                    waitUntil(timeout: 0.5) { done in
+                        let username = "fake73"
+                        let password = "fakepassword"
+                        
+                        let _ = LoginNetworkCall(username: username, password: password)
+                                                .login().map { successObject -> Bool in
+                                                    expect(successObject).toNot(beNil())
+                                                    if let success = successObject {
+                                                        expect(success.objectId).toNot(beNil())
+                                                        expect(success.apiToken).toNot(beNil())
+                                                    }
+                                                    done()
+                                                    return true
+                                                }.start()
                     }
                 }
             }

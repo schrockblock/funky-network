@@ -1,0 +1,53 @@
+PODS:
+  - Eson (0.3.4)
+  - FunkyNetwork (0.1.0):
+    - ReactiveSwift (~> 2.0)
+  - Nimble (5.1.1)
+  - OHHTTPStubs/Core (6.0.0)
+  - OHHTTPStubs/Default (6.0.0):
+    - OHHTTPStubs/Core
+    - OHHTTPStubs/JSON
+    - OHHTTPStubs/NSURLSession
+    - OHHTTPStubs/OHPathHelpers
+  - OHHTTPStubs/JSON (6.0.0):
+    - OHHTTPStubs/Core
+  - OHHTTPStubs/NSURLSession (6.0.0):
+    - OHHTTPStubs/Core
+  - OHHTTPStubs/OHPathHelpers (6.0.0)
+  - OHHTTPStubs/Swift (6.0.0):
+    - OHHTTPStubs/Default
+  - Quick (1.0.0)
+  - ReactiveSwift (2.0.1):
+    - Result (~> 3.2)
+  - Result (3.2.3)
+
+DEPENDENCIES:
+  - Eson (from `https://github.com/schrockblock/eson`)
+  - FunkyNetwork (from `../`)
+  - Nimble (~> 5.1.1)
+  - OHHTTPStubs/Swift
+  - Quick (~> 1.0.0)
+
+EXTERNAL SOURCES:
+  Eson:
+    :git: https://github.com/schrockblock/eson
+  FunkyNetwork:
+    :path: "../"
+
+CHECKOUT OPTIONS:
+  Eson:
+    :commit: 253778b5a35cdd457348c425dc5438f7839b8d7c
+    :git: https://github.com/schrockblock/eson
+
+SPEC CHECKSUMS:
+  Eson: 5beaedf5ac885d9b427602f487ed920b54d43c3c
+  FunkyNetwork: e4aae13c0b6b900bdd7f5e542ec71f2e4474b9db
+  Nimble: 415e3aa3267e7bc2c96b05fa814ddea7bb686a29
+  OHHTTPStubs: 752f9b11fd810a15162d50f11c06ff94f8e012eb
+  Quick: 8024e4a47e6cc03a9d5245ef0948264fc6d27cff
+  ReactiveSwift: 60a29ff35988a964fd2bb759755cb6594de523fc
+  Result: 128640a6347e8d2ae48b142556739a2d13f90ce6
+
+PODFILE CHECKSUM: e33249f4d74e2140238bca9a07f32ebb331e9fe5
+
+COCOAPODS: 1.2.1

@@ -1,12 +1,17 @@
 use_frameworks!
+platform :ios, '9.0'
 
 target 'FunkyNetwork_Example' do
   pod 'FunkyNetwork', :path => '../'
+  pod 'Eson', :git => 'https://github.com/schrockblock/eson'
+end
 
-  target 'FunkyNetwork_Tests' do
-    inherit! :search_paths
 
+target 'FunkyNetwork_Tests' do
+    pod 'FunkyNetwork', :path => '../'
+    pod 'Eson', :git => 'https://github.com/schrockblock/eson'
+    
     pod 'Quick', '~> 1.0.0'
-  pod 'Nimble', '~> 5.1.1'
-  end
+    pod 'Nimble', '~> 5.1.1'
+    pod 'OHHTTPStubs/Swift'
 end
