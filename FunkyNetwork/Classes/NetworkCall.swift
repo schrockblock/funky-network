@@ -17,7 +17,7 @@ open class NetworkCall {
     public let postData: Data?
     public let httpHeaders: Dictionary<String, String>?
     
-    public init(_ configuration: ServerConfigurationProtocol, _ httpMethod: String = "GET", _ httpHeaders: Dictionary<String, String>?, _ endpoint: String, _ postData: Data?) {
+    public init(configuration: ServerConfigurationProtocol, httpMethod: String = "GET", httpHeaders: Dictionary<String, String>?, endpoint: String, postData: Data?) {
         self.configuration = configuration
         self.httpMethod = httpMethod
         self.httpHeaders = httpHeaders
@@ -33,7 +33,7 @@ open class NetworkCall {
                 if let connectionError = error as NSError? {
                     observer.send(error: connectionError)
                 } else if let responseCode = (response as? HTTPURLResponse)?.statusCode {
-                    if let data = data, responseCode < 300{
+                    if let data = data, responseCode < 300 {
                         observer.send(value: data)
                         observer.sendCompleted()
                     } else {
@@ -67,11 +67,15 @@ open class NetworkCall {
     }
     
     open func url(_ endpoint: String) -> URL? {
+        return URL(string: urlString(endpoint))
+    }
+    
+    open func urlString(_ endpoint: String) -> String {
         let baseUrlString = "\(configuration.scheme)://\(configuration.host)/"
         if let apiRoute = configuration.apiBaseRoute {
-            return URL(string: "\(baseUrlString)/\(apiRoute)/\(endpoint)")
+            return "\(baseUrlString)/\(apiRoute)/\(endpoint)"
         } else {
-            return URL(string: "\(baseUrlString)/\(endpoint)")
+            return "\(baseUrlString)/\(endpoint)"
         }
     }
 }

@@ -22,6 +22,7 @@ The example project also has some good stuff. `LoginNetworkCall` shows how you c
 3. Lightweight! Only a few classes here, and none terribly long or involved.
 4. Convenient! Smart defaults make things easy to work with out of the box.
 5. Flexible! Since everything is broken up into tiny pieces, it's easy to swap things out, or mix and match.
+6. Testable! Easily stub your calls so you can quickly reproduce tricky edge cases.
 
 ## Installation
 

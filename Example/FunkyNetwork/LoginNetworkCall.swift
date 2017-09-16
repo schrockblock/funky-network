@@ -15,23 +15,21 @@ open class LoginNetworkCall: JsonNetworkCall {
     fileprivate static let usernameKey = "username"
     fileprivate static let passwordKey = "password"
     
-    init(username: String, password: String) {
+    init(configuration: ServerConfigurationProtocol = ExampleServerConfiguration.current, username: String, password: String, stubHolder: StubHolderProtocol? = StubHolder(responseCode: 200, stubFileName: "login_success.json", responseHeaders: [:])) {
         let json = [LoginNetworkCall.usernameKey: username, LoginNetworkCall.passwordKey: password]
-        var postData: Data?
-        do {
-            postData = try JSONSerialization.data(withJSONObject: json, options: JSONSerialization.WritingOptions.prettyPrinted)
-        } catch let parseError as NSError {
-            NSLog("Parse error: %@", parseError.localizedDescription);
-        }
+        let postData: Data? = JsonDataHandler.deserialize(json)
         
-        super.init(configuration: ExampleServerConfiguration.current, httpMethod: "POST", endpoint: "user/auth/local/login", postData: postData)
+        super.init(configuration: configuration, httpMethod: "POST", endpoint: "user/auth/local/login", postData: postData, stubHolder: stubHolder)
     }
     
     func login() -> SignalProducer<LoginSuccessObject?, NSError> {
-        return super.jsonProducer()
+        return jsonProducer()
             .flatMap(.concat, parse)
             .flatMapError { error -> SignalProducer<LoginSuccessObject?, NSError> in
                 let isHandled = DefaultNetworkErrorHandler.handleError(error: error)
+                if !isHandled {
+                    // handle error however you'd like
+                }
                 return SignalProducer(error: error)
             }
     }

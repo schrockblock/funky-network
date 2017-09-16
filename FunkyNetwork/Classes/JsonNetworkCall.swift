@@ -10,10 +10,10 @@ import UIKit
 import ReactiveSwift
 import Result
 
-open class JsonNetworkCall: NetworkCall {
+open class JsonNetworkCall: StubbableNetworkCall {
 
-    public init(configuration: ServerConfigurationProtocol, httpMethod: String, endpoint: String, postData: Data?) {
-        super.init(configuration, httpMethod, JsonNetworkCall.jsonHeaders(), endpoint, postData)
+    public override init(configuration: ServerConfigurationProtocol, httpMethod: String, httpHeaders: Dictionary<String, String>? = JsonNetworkCall.jsonHeaders(), endpoint: String, postData: Data?, stubHolder: StubHolderProtocol? = nil) {
+        super.init(configuration: configuration, httpMethod: httpMethod, httpHeaders: httpHeaders, endpoint: endpoint, postData: postData, stubHolder: stubHolder)
     }
     
     open class func jsonHeaders() -> Dictionary<String, String> {
@@ -21,8 +21,8 @@ open class JsonNetworkCall: NetworkCall {
     }
     
     open func jsonProducer() -> SignalProducer<Any, NSError> {
-        let scheduler = QueueScheduler(qos: .background, name: "com.kickstarter.ksapi", targeting: nil)
-        return super.producer()
+        let scheduler = QueueScheduler(qos: .background, name: "com.networking.funky", targeting: nil)
+        return producer()
             .start(on: scheduler)
             .map(JsonDataHandler.serialize)
             .flatMap(.concat) { json -> SignalProducer<Any, NSError> in

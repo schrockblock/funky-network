@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FunkyNetwork'
-  s.version          = '0.0.1'
+  s.version          = '0.0.2'
   s.summary          = 'FunkyNetwork provides a foundation for reusable functional networking in Swift.'
 
 # This description is used to generate tags and improve search results.
@@ -33,4 +33,5 @@ FunkyNetwork provides a foundation for reusable functional networking in Swift.
 
   # s.frameworks = 'UIKit', 'MapKit'
   s.dependency 'ReactiveSwift', '~> 2.0'
+  s.dependency 'OHHTTPStubs/Swift'
 end
