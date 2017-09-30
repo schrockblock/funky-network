@@ -19,7 +19,7 @@ open class StubHolder: StubHolderProtocol {
     public let stubFileName: String
     public let responseHeaders: [String : String]
     
-    public init(responseCode: Int32 = 200, stubFileName: String, responseHeaders: [String: String]) {
+    public init(responseCode: Int32 = 200, stubFileName: String, responseHeaders: [String: String] = ["Content-type":"application/json"]) {
         self.responseCode = responseCode
         self.stubFileName = stubFileName
         self.responseHeaders = responseHeaders

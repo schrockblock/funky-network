@@ -1,6 +1,6 @@
 //
 //  LoginNetworkCall.swift
-//  SBNetworking
+//  FunkyNetwork
 //
 //  Created by Elliot Schrock on 8/31/17.
 //  Copyright © 2017 CocoaPods. All rights reserved.
@@ -15,7 +15,7 @@ open class LoginNetworkCall: JsonNetworkCall {
     fileprivate static let usernameKey = "username"
     fileprivate static let passwordKey = "password"
     
-    init(configuration: ServerConfigurationProtocol = ExampleServerConfiguration.current, username: String, password: String, stubHolder: StubHolderProtocol? = StubHolder(responseCode: 200, stubFileName: "login_success.json", responseHeaders: [:])) {
+    init(configuration: ServerConfigurationProtocol = ExampleServerConfiguration.current, username: String, password: String, stubHolder: StubHolderProtocol? = StubHolder(responseCode: 200, stubFileName: "login_success.json")) {
         let json = [LoginNetworkCall.usernameKey: username, LoginNetworkCall.passwordKey: password]
         let postData: Data? = JsonDataHandler.deserialize(json)
         

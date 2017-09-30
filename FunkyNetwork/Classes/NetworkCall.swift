@@ -71,7 +71,7 @@ open class NetworkCall {
     }
     
     open func urlString(_ endpoint: String) -> String {
-        let baseUrlString = "\(configuration.scheme)://\(configuration.host)/"
+        let baseUrlString = "\(configuration.scheme)://\(configuration.host)"
         if let apiRoute = configuration.apiBaseRoute {
             return "\(baseUrlString)/\(apiRoute)/\(endpoint)"
         } else {
