@@ -8,6 +8,7 @@
 
 import UIKit
 import OHHTTPStubs
+import ReactiveSwift
 
 open class StubbableNetworkCall: NetworkCall {
     public let stubHolder: StubHolderProtocol?
@@ -16,12 +17,19 @@ open class StubbableNetworkCall: NetworkCall {
         self.stubHolder = stubHolder
         
         super.init(configuration: configuration, httpHeaders: httpHeaders, endpoint: endpoint, postData: postData)
-        
+    }
+    
+    open override func producer() -> SignalProducer<Data, NSError> {
         if let stubHolder = self.stubHolder, configuration.shouldStub {
-            stub(condition: stubCondition()) { _ in
+            let stubDesc = stub(condition: stubCondition()) { _ in
                 let stubPath = OHPathForFileInBundle(stubHolder.stubFileName, Bundle.main)
                 return fixture(filePath: stubPath!, status: stubHolder.responseCode, headers: stubHolder.responseHeaders)
             }
+            return super.producer().on(disposed: {
+                OHHTTPStubs.removeStub(stubDesc)
+            })
+        } else {
+            return super.producer()
         }
     }
     
