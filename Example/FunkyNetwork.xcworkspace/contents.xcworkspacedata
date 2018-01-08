@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Tests/FunkyNetworkSpecs.playground">
+   </FileRef>
+   <FileRef
       location = "group:FunkyNetwork.xcodeproj">
    </FileRef>
    <FileRef

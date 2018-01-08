@@ -40,6 +40,7 @@ open class NetworkCall {
                         let url = request.url?.absoluteString ?? ""
                         let serverError = NSError(domain: "Server", code: responseCode, userInfo: ["url" : url])
                         observer.send(error: serverError)
+                        observer.sendCompleted()
                     }
                 }
             }

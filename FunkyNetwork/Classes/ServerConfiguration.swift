@@ -22,7 +22,7 @@ open class ServerConfiguration: ServerConfigurationProtocol {
     public let host: String
     public let apiBaseRoute: String?
     
-    public init(shouldStub: Bool = false, scheme: String, host: String, apiRoute: String?) {
+    public init(shouldStub: Bool = false, scheme: String = "https", host: String, apiRoute: String?) {
         self.shouldStub = shouldStub
         self.scheme = scheme
         self.host = host

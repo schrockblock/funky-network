@@ -16,12 +16,16 @@
 		4944F0D41F6B6A950061EC97 /* ServerObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4944F0CE1F6B6A950061EC97 /* ServerObject.swift */; };
 		4944F0D81F6B6CA10061EC97 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4944F0D71F6B6CA10061EC97 /* AuthManager.swift */; };
 		495EE5F41F82C76C00ACF1D7 /* login_fail.json in Resources */ = {isa = PBXBuildFile; fileRef = 495EE5F31F82C76C00ACF1D7 /* login_fail.json */; };
+		49E378452004270500E0DA3D /* NetworkCallTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E378442004270500E0DA3D /* NetworkCallTests.swift */; };
+		49E378472004271E00E0DA3D /* StubbableNetworkCallTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E378462004271E00E0DA3D /* StubbableNetworkCallTests.swift */; };
+		49E378492004273200E0DA3D /* JsonNetworkCallTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E378482004273200E0DA3D /* JsonNetworkCallTests.swift */; };
+		49E3784B200432DA00E0DA3D /* .travis.yml in Resources */ = {isa = PBXBuildFile; fileRef = 49E3784A200432DA00E0DA3D /* .travis.yml */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
-		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
+		607FACEC1AFB9204008FA782 /* LoginSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* LoginSpec.swift */; };
 		648C3943D176746914CBEF7E /* Pods_FunkyNetwork_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5BF5AD03510333BD01163AA /* Pods_FunkyNetwork_Tests.framework */; };
 		B407E61273B7F62BF812EFA8 /* Pods_FunkyNetwork_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3B2FC68733F8306DE1E3832 /* Pods_FunkyNetwork_Example.framework */; };
 /* End PBXBuildFile section */
@@ -48,6 +52,10 @@
 		4944F0CE1F6B6A950061EC97 /* ServerObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerObject.swift; sourceTree = "<group>"; };
 		4944F0D71F6B6CA10061EC97 /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		495EE5F31F82C76C00ACF1D7 /* login_fail.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = login_fail.json; sourceTree = "<group>"; };
+		49E378442004270500E0DA3D /* NetworkCallTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkCallTests.swift; sourceTree = "<group>"; };
+		49E378462004271E00E0DA3D /* StubbableNetworkCallTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubbableNetworkCallTests.swift; sourceTree = "<group>"; };
+		49E378482004273200E0DA3D /* JsonNetworkCallTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonNetworkCallTests.swift; sourceTree = "<group>"; };
+		49E3784A200432DA00E0DA3D /* .travis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = .travis.yml; path = ../.travis.yml; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* FunkyNetwork_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FunkyNetwork_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -57,7 +65,7 @@
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* FunkyNetwork_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FunkyNetwork_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
+		607FACEB1AFB9204008FA782 /* LoginSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSpec.swift; sourceTree = "<group>"; };
 		635F8A1048782EB1C4667838 /* Pods-FunkyNetwork_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FunkyNetwork_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-FunkyNetwork_Example/Pods-FunkyNetwork_Example.release.xcconfig"; sourceTree = "<group>"; };
 		64B469104DC2A2EA499D9A7A /* FunkyNetwork.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = FunkyNetwork.podspec; path = ../FunkyNetwork.podspec; sourceTree = "<group>"; };
 		BCA8BD874A6CFE94F882C198 /* Pods-FunkyNetwork_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FunkyNetwork_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FunkyNetwork_Tests/Pods-FunkyNetwork_Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -169,7 +177,10 @@
 			children = (
 				4944F0C71F6B69D10061EC97 /* login_success.json */,
 				495EE5F31F82C76C00ACF1D7 /* login_fail.json */,
-				607FACEB1AFB9204008FA782 /* Tests.swift */,
+				607FACEB1AFB9204008FA782 /* LoginSpec.swift */,
+				49E378442004270500E0DA3D /* NetworkCallTests.swift */,
+				49E378462004271E00E0DA3D /* StubbableNetworkCallTests.swift */,
+				49E378482004273200E0DA3D /* JsonNetworkCallTests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
 			path = Tests;
@@ -189,6 +200,7 @@
 				64B469104DC2A2EA499D9A7A /* FunkyNetwork.podspec */,
 				27F438B1F79AFCF6272C2BD2 /* README.md */,
 				C146FE713BDD2A248448B6DE /* LICENSE */,
+				49E3784A200432DA00E0DA3D /* .travis.yml */,
 			);
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
@@ -291,6 +303,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49E3784B200432DA00E0DA3D /* .travis.yml in Resources */,
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				495EE5F41F82C76C00ACF1D7 /* login_fail.json in Resources */,
@@ -422,7 +435,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
+				49E378492004273200E0DA3D /* JsonNetworkCallTests.swift in Sources */,
+				49E378472004271E00E0DA3D /* StubbableNetworkCallTests.swift in Sources */,
+				49E378452004270500E0DA3D /* NetworkCallTests.swift in Sources */,
+				607FACEC1AFB9204008FA782 /* LoginSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

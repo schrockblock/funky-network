@@ -8,14 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FunkyNetwork'
-  s.version          = '0.0.4'
+  s.version          = '0.0.5'
   s.summary          = 'FunkyNetwork provides a foundation for reusable functional networking in Swift.'
-
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
 FunkyNetwork provides a foundation for reusable functional networking in Swift.

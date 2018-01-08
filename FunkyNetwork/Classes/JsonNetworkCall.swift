@@ -17,7 +17,7 @@ open class JsonNetworkCall: StubbableNetworkCall {
     }
     
     open class func jsonHeaders() -> Dictionary<String, String> {
-        return ["Content-type": "application/json", "Accept": "application/json"]
+        return ["Content-Type": "application/json", "Accept": "application/json"]
     }
     
     open func jsonProducer() -> SignalProducer<Any, NSError> {
