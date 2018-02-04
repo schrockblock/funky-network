@@ -46,7 +46,7 @@ open class NetworkCall {
         serverErrorSignal = httpResponseSignal.filter({ $0.statusCode > 300 }).map({ NSError(domain: "Server", code: $0.statusCode, userInfo: ["url" : $0.url?.absoluteString as Any]) })
         dataSignal = dataProperty.signal
         
-        dataTaskSignal.signal.observeValues { task in
+        dataTaskSignal.observeValues { task in
             task.resume()
         }
     }
