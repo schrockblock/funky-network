@@ -16,9 +16,7 @@ open class LoginNetworkCall: JsonNetworkCall {
     fileprivate static let usernameKey = "username"
     fileprivate static let passwordKey = "password"
     
-    public var loginSuccessObjectSignal: Signal<LoginSuccessObject?, NoError> {
-        return jsonSignal.map(LoginNetworkCall.parse)
-    }
+    public lazy var loginSuccessObjectSignal: Signal<LoginSuccessObject?, NoError> = self.jsonSignal.map(LoginNetworkCall.parse)
     
     init(configuration: ServerConfigurationProtocol = ExampleServerConfiguration.current, username: String, password: String, stubHolder: StubHolderProtocol? = StubHolder(responseCode: 200, stubFileName: "login_success.json")) {
         let json = [LoginNetworkCall.usernameKey: username, LoginNetworkCall.passwordKey: password]
