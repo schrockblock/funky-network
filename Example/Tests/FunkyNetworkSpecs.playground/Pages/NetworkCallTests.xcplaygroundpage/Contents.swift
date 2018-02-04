@@ -107,17 +107,9 @@ class NetworkCallTests: XCTestCase {
             
             let expectation = XCTestExpectation(description: "")
             
-            call.producer().startWithResult({ (result) in
-                var res: Bool = false
-                switch result {
-                case .success(_):
-                    XCTAssert(true)
-                    res = true
-                    break
-                case .failure(_):
-                    XCTAssert(false)
-                    break
-                }
+            call.responseSignal.observeValues({ (result) in
+                var res: Bool = true
+                
                 OHHTTPStubs.removeStub(passStubDesc)
                 OHHTTPStubs.removeStub(failStubDesc)
                 
@@ -125,6 +117,7 @@ class NetworkCallTests: XCTestCase {
                 
                 expectation.fulfill()
             })
+            call.fire()
             
             self.wait(for: [expectation], timeout: 5.0)
         }
@@ -156,17 +149,9 @@ class NetworkCallTests: XCTestCase {
             
             let expectation = XCTestExpectation(description: "")
             
-            call.producer().startWithResult({ (result) in
-                var res: Bool = false
-                switch result {
-                case .success(_):
-                    XCTAssert(true)
-                    res = true
-                    break
-                case .failure(_):
-                    XCTAssert(false)
-                    break
-                }
+            call.responseSignal.observeValues({ (result) in
+                var res: Bool = true
+                
                 OHHTTPStubs.removeStub(passStubDesc)
                 OHHTTPStubs.removeStub(failStubDesc)
                 
@@ -174,6 +159,7 @@ class NetworkCallTests: XCTestCase {
                 
                 expectation.fulfill()
             })
+            call.fire()
             
             self.wait(for: [expectation], timeout: 5.0)
         }
@@ -205,17 +191,9 @@ class NetworkCallTests: XCTestCase {
             
             let expectation = XCTestExpectation(description: "")
             
-            call.producer().startWithResult({ (result) in
-                var res: Bool = false
-                switch result {
-                case .success(_):
-                    XCTAssert(true)
-                    res = true
-                    break
-                case .failure(_):
-                    XCTAssert(false)
-                    break
-                }
+            call.responseSignal.observeValues({ (result) in
+                var res: Bool = true
+                
                 OHHTTPStubs.removeStub(passStubDesc)
                 OHHTTPStubs.removeStub(failStubDesc)
                 
@@ -223,6 +201,7 @@ class NetworkCallTests: XCTestCase {
                 
                 expectation.fulfill()
             })
+            call.fire()
             
             self.wait(for: [expectation], timeout: 5.0)
         }

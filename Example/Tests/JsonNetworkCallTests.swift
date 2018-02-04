@@ -41,22 +41,13 @@ class JsonNetworkCallTests: XCTestCase {
             
             let expectation = XCTestExpectation(description: "")
             
-            call.jsonProducer().startWithResult({ (result) in
-                var res: Bool = false
-                switch result {
-                case .success(_):
-                    res = true
-                    break
-                case .failure(_):
-                    break
-                }
+            call.jsonSignal.observeValues({ jsonObject in
                 OHHTTPStubs.removeStub(passStubDesc)
                 OHHTTPStubs.removeStub(failStubDesc)
                 
-                XCTAssert(res)
-                
                 expectation.fulfill()
             })
+            call.fire()
             
             self.wait(for: [expectation], timeout: 5.0)
         }
@@ -83,17 +74,11 @@ class JsonNetworkCallTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "")
         
-        call.jsonProducer().startWithResult({ (result) in
+        call.jsonSignal.observeValues({ jsonObject in
             let correct = ["success": true]
             var res = false
-            switch result {
-            case let .success(jsonObject):
-                if let json = jsonObject as? [String: Bool] {
-                    res = json == correct
-                }
-                break
-            case .failure(_):
-                break
+            if let json = jsonObject as? [String: Bool] {
+                res = json == correct
             }
             
             OHHTTPStubs.removeStub(stubDesc)
@@ -102,6 +87,7 @@ class JsonNetworkCallTests: XCTestCase {
             
             expectation.fulfill()
         })
+        call.fire()
         
         self.wait(for: [expectation], timeout: 5.0)
     }
@@ -133,19 +119,10 @@ class JsonNetworkCallTests: XCTestCase {
     
     func handleStubbableCall(stubHolder: StubHolderProtocol, checker: @escaping ((_ success: Bool) -> Void)) {
         let call = NetCall(configuration: stubConfig, httpMethod: "POST", httpHeaders: nil, endpoint: "sessions", postData: "{}".data(using: String.Encoding.utf8), stubHolder: stubHolder)
-        
-        call.producer().startWithResult({ (result) in
-            var res = false
-            switch result {
-            case .success(_):
-                res = true
-                break
-            case .failure(_):
-                break
-            }
-            
-            checker(res)
+        call.httpResponseSignal.observeValues({ response in
+            checker(response.statusCode < 300)
         })
+        call.fire()
     }
     
     func testCorrectUrl() {
@@ -219,22 +196,13 @@ class JsonNetworkCallTests: XCTestCase {
             
             let expectation = XCTestExpectation(description: "")
             
-            call.producer().startWithResult({ (result) in
-                var res: Bool = false
-                switch result {
-                case .success(_):
-                    res = true
-                    break
-                case .failure(_):
-                    break
-                }
+            call.responseSignal.observeValues({ (result) in
                 OHHTTPStubs.removeStub(passStubDesc)
                 OHHTTPStubs.removeStub(failStubDesc)
                 
-                XCTAssert(res)
-                
                 expectation.fulfill()
             })
+            call.fire()
             
             self.wait(for: [expectation], timeout: 5.0)
         }
@@ -265,22 +233,13 @@ class JsonNetworkCallTests: XCTestCase {
             
             let expectation = XCTestExpectation(description: "")
             
-            call.producer().startWithResult({ (result) in
-                var res: Bool = false
-                switch result {
-                case .success(_):
-                    res = true
-                    break
-                case .failure(_):
-                    break
-                }
+            call.responseSignal.observeValues({ (result) in
                 OHHTTPStubs.removeStub(passStubDesc)
                 OHHTTPStubs.removeStub(failStubDesc)
                 
-                XCTAssert(res)
-                
                 expectation.fulfill()
             })
+            call.fire()
             
             self.wait(for: [expectation], timeout: 5.0)
         }
@@ -311,22 +270,13 @@ class JsonNetworkCallTests: XCTestCase {
             
             let expectation = XCTestExpectation(description: "")
             
-            call.producer().startWithResult({ (result) in
-                var res: Bool = false
-                switch result {
-                case .success(_):
-                    res = true
-                    break
-                case .failure(_):
-                    break
-                }
+            call.responseSignal.observeValues({ (result) in
                 OHHTTPStubs.removeStub(passStubDesc)
                 OHHTTPStubs.removeStub(failStubDesc)
                 
-                XCTAssert(res)
-                
                 expectation.fulfill()
             })
+            call.fire()
             
             self.wait(for: [expectation], timeout: 5.0)
         }

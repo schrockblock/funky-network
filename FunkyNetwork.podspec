@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FunkyNetwork'
-  s.version          = '0.0.5'
+  s.version          = '0.1.1'
   s.summary          = 'FunkyNetwork provides a foundation for reusable functional networking in Swift.'
 
   s.description      = <<-DESC

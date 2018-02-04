@@ -19,7 +19,7 @@ open class StubbableNetworkCall: NetworkCall {
         super.init(configuration: configuration, httpMethod: httpMethod, httpHeaders: httpHeaders, endpoint: endpoint, postData: postData)
     }
     
-    open override func producer() -> SignalProducer<Data, NSError> {
+    open override func fire() {
         if let stubHolder = self.stubHolder, configuration.shouldStub {
             let stubDesc = stub(condition: stubCondition()) { _ in
                 if let fileName = stubHolder.stubFileName {
@@ -31,12 +31,12 @@ open class StubbableNetworkCall: NetworkCall {
                     return OHHTTPStubsResponse(data: Data(), statusCode: stubHolder.responseCode, headers: stubHolder.responseHeaders)
                 }
             }
-            return super.producer().on(disposed: {
+            self.responseProperty.signal.observeValues({ _ in
                 OHHTTPStubs.removeStub(stubDesc)
             })
-        } else {
-            return super.producer()
         }
+        
+        super.fire()
     }
     
     open func stubCondition() -> ((URLRequest) -> Bool) {

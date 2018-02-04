@@ -17,35 +17,47 @@ open class NetworkCall {
     public let postData: Data?
     public let httpHeaders: Dictionary<String, String>?
     
+    public let dataTaskSignal: Signal<URLSessionDataTask, NoError>
+    public let errorSignal: Signal<NSError, NoError>
+    public let serverErrorSignal: Signal<NSError, NoError>
+    public let responseSignal: Signal<URLResponse, NoError>
+    public let httpResponseSignal: Signal<HTTPURLResponse, NoError>
+    public let dataSignal: Signal<Data?, NoError>
+    
+    let dataTaskProperty = MutableProperty<URLSessionDataTask?>(nil)
+    let errorProperty = MutableProperty<NSError?>(nil)
+    let serverErrorProperty = MutableProperty<NSError?>(nil)
+    let responseProperty = MutableProperty<URLResponse?>(nil)
+    let dataProperty = MutableProperty<Data?>(nil)
+    
+    let fireProperty = MutableProperty(())
+    
     public init(configuration: ServerConfigurationProtocol, httpMethod: String = "GET", httpHeaders: Dictionary<String, String>?, endpoint: String, postData: Data?) {
         self.configuration = configuration
         self.httpMethod = httpMethod
         self.httpHeaders = httpHeaders
         self.endpoint = endpoint
         self.postData = postData
+        
+        dataTaskSignal = dataTaskProperty.signal.skipNil()
+        errorSignal = errorProperty.signal.skipNil()
+        responseSignal = responseProperty.signal.skipNil()
+        httpResponseSignal = responseSignal.map({ $0 as? HTTPURLResponse }).skipNil()
+        serverErrorSignal = httpResponseSignal.filter({ $0.statusCode > 300 }).map({ NSError(domain: "Server", code: $0.statusCode, userInfo: ["url" : $0.url?.absoluteString as Any]) })
+        dataSignal = dataProperty.signal
+        
+        dataTaskSignal.signal.observeValues { task in
+            task.resume()
+        }
     }
     
-    open func producer() -> SignalProducer<Data, NSError> {
-        return SignalProducer { observer, disposable in
-            let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: OperationQueue.main)
-            let request = self.mutableRequest()
-            let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
-                if let connectionError = error as NSError? {
-                    observer.send(error: connectionError)
-                } else if let responseCode = (response as? HTTPURLResponse)?.statusCode {
-                    if let data = data, responseCode < 300 {
-                        observer.send(value: data)
-                        observer.sendCompleted()
-                    } else {
-                        let url = request.url?.absoluteString ?? ""
-                        let serverError = NSError(domain: "Server", code: responseCode, userInfo: ["url" : url])
-                        observer.send(error: serverError)
-                        observer.sendCompleted()
-                    }
-                }
-            }
-            disposable.observeEnded(task.cancel)
-            task.resume()
+    open func fire() {
+        let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: OperationQueue.main)
+        let request = self.mutableRequest()
+        dataTaskProperty.value = session.dataTask(with: request as URLRequest) { (data, response, error) in
+            self.errorProperty.value = error as NSError?
+            self.responseProperty.value = response
+            self.dataProperty.value = data
         }
     }
     
