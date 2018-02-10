@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.summary          = 'FunkyNetwork provides a foundation for reusable functional networking in Swift.'
 
   s.description      = <<-DESC
-FunkyNetwork provides a foundation for reusable functional networking in Swift.
+FunkyNetwork provides a foundation for reusable functional networking in Swift. It harnesses inheritance to make adding new capabilities to a simple set of networking classes easy and fast, while pushing side effects to the boundaries of the implementation.
                        DESC
 
   s.homepage         = 'https://github.com/schrockblock/funky-network'
