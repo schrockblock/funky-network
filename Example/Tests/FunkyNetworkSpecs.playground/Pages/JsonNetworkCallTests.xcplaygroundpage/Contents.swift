@@ -28,7 +28,7 @@ class JsonNetworkCallTests: XCTestCase {
         
         if !success {
             boolToString(success)
-            XCTAssert(success)
+            XCTAssertTrue(success)
         } else {
             let passStubCondition: ((URLRequest) -> Bool) = {
                 $0.url?.absoluteString == call.urlString(call.endpoint) && $0.allHTTPHeaderFields! == headers
@@ -48,7 +48,7 @@ class JsonNetworkCallTests: XCTestCase {
             let expectation = XCTestExpectation(description: "")
             
             call.jsonSignal.observeValues({ json in
-                XCTAssert(true)
+                XCTAssertTrue(true)
                 var res = true
                 
                 OHHTTPStubs.removeStub(passStubDesc)
@@ -72,7 +72,7 @@ class JsonNetworkCallTests: XCTestCase {
         handleJsonCall(stubHolder: successfulStub) { (success) in
             boolToString(success)
             
-            XCTAssert(success)
+            XCTAssertTrue(success)
         }
     }
     
@@ -224,7 +224,7 @@ class NetworkCallTests: XCTestCase {
         
         if !success {
             checker(success)
-            XCTAssert(success)
+            XCTAssertTrue(success)
         } else {
             let passStubCondition: ((URLRequest) -> Bool) = {
                 $0.url?.absoluteString == call.urlString(call.endpoint) && $0.allHTTPHeaderFields! == headers
@@ -266,7 +266,7 @@ class NetworkCallTests: XCTestCase {
         
         if !success {
             checker(success)
-            XCTAssert(success)
+            XCTAssertTrue(success)
         } else {
             let passStubCondition: ((URLRequest) -> Bool) = {
                 $0.url?.absoluteString == call.urlString(call.endpoint)
@@ -308,7 +308,7 @@ class NetworkCallTests: XCTestCase {
         
         if !success {
             checker(success)
-            XCTAssert(success)
+            XCTAssertTrue(success)
         } else {
             let passStubCondition: ((URLRequest) -> Bool) = {
                 $0.url?.absoluteString == call.urlString(call.endpoint) && $0.httpMethod == method

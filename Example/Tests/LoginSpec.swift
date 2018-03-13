@@ -26,6 +26,23 @@ class LoginSpec: QuickSpec {
                     }
                 }
             }
+            
+            context("failure") {
+                it("should fail gracefully") {
+                    waitUntil(timeout: 0.5) { done in
+                        let unsuccessfulStub = StubHolder(responseCode: 403,
+                                                          stubFileName: "login_fail.json",
+                                                          bundle: Bundle(for: type(of: self)))
+                        
+                        let call = LoginNetworkCall(configuration: ExampleServerConfiguration.stub, username: "fake73", password: "fakepassword", stubHolder: unsuccessfulStub)
+                        call.serverErrorSignal.observeValues({ error in
+                            expect(Int32(error.code)).to(equal(unsuccessfulStub.responseCode))
+                            done()
+                        })
+                        call.fire()
+                    }
+                }
+            }
         }
     }
 }

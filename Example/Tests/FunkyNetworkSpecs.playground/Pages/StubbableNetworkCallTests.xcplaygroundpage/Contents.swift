@@ -20,7 +20,9 @@ class StubbableNetworkCallTests: XCTestCase {
         let unsuccessfulStub = StubHolder(responseCode: 500, stubData: "{}".data(using: String.Encoding.utf8))
         
         handleStubbableCall(stubHolder: unsuccessfulStub) { (unSuccess) in
-            boolToString(unSuccess)
+            boolToString(!unSuccess)
+            
+            XCTAssertTrue(!unSuccess)
         }
     }
     
@@ -31,17 +33,17 @@ class StubbableNetworkCallTests: XCTestCase {
         handleStubbableCall(stubHolder: unsuccessfulStub) { (unSuccess) in
             boolToString(!unSuccess)
             
-            XCTAssert(!unSuccess)
+            XCTAssertTrue(!unSuccess)
             
             self.handleStubbableCall(stubHolder: successfulStub, checker: { (success) in
                 boolToString(success)
                 
-                XCTAssert(success)
+                XCTAssertTrue(success)
                 
                 self.handleStubbableCall(stubHolder: unsuccessfulStub, checker: { (unUnSuccess) in
                     boolToString(!unUnSuccess)
                     
-                    XCTAssert(!unUnSuccess)
+                    XCTAssertTrue(!unUnSuccess)
                 })
             })
         }
@@ -130,6 +132,30 @@ class NetworkCallTests: XCTestCase {
         handleDefaultCall(headers: ["Content-Type": "application/json", "Custom-Header": "blah blah blah"], checker: {
             success in let result = boolToString(success)
         })
+    }
+    
+    func testServerError() {
+        let expectation = XCTestExpectation(description: "")
+        
+        let call = NetCall(configuration: stubConfig, httpMethod: "GET", httpHeaders: ["Content-Type": "application/json"], endpoint: NetworkCallTests.endpoint, postData: nil)
+        
+        let failStubCondition: ((URLRequest) -> Bool) = {
+            $0.url?.absoluteString == call.urlString(call.endpoint)
+        }
+        let failStubDesc = stub(condition: failStubCondition) { _ in
+            let stubData = "{}".data(using: String.Encoding.utf8)
+            return OHHTTPStubsResponse(data: stubData!, statusCode:403, headers:nil)
+        }
+        
+        call.serverErrorSignal.observeValues { error in
+            boolToString(Int32(error.code) == 403)
+            OHHTTPStubs.removeStub(failStubDesc)
+            expectation.fulfill()
+        }
+        
+        call.fire()
+        
+        self.wait(for: [expectation], timeout: 5.0)
     }
     
     func handleDefaultCall(headers: Dictionary<String, String>, checker: @escaping ((_ success: Bool) -> Void)) {

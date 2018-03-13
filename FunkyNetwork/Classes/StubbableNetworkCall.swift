@@ -23,13 +23,15 @@ open class StubbableNetworkCall: NetworkCall {
         if let stubHolder = self.stubHolder, configuration.shouldStub {
             let stubDesc = stub(condition: stubCondition()) { _ in
                 if let fileName = stubHolder.stubFileName {
-                    let stubPath = OHPathForFileInBundle(fileName, Bundle.main)
-                    return fixture(filePath: stubPath!, status: stubHolder.responseCode, headers: stubHolder.responseHeaders)
+                    if let stubPath = OHPathForFileInBundle(fileName, stubHolder.bundle) {
+                        return fixture(filePath: stubPath, status: stubHolder.responseCode, headers: stubHolder.responseHeaders)
+                    } else {
+                        print("Could not find path for file: \(fileName); is it in the right bundle?")
+                    }
                 } else if let stubData = stubHolder.stubData {
                     return OHHTTPStubsResponse(data: stubData, statusCode: stubHolder.responseCode, headers: stubHolder.responseHeaders)
-                } else {
-                    return OHHTTPStubsResponse(data: Data(), statusCode: stubHolder.responseCode, headers: stubHolder.responseHeaders)
                 }
+                return OHHTTPStubsResponse(data: Data(), statusCode: stubHolder.responseCode, headers: stubHolder.responseHeaders)
             }
             self.responseProperty.signal.observeValues({ _ in
                 OHHTTPStubs.removeStub(stubDesc)

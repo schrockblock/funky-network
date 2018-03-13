@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4944F0C81F6B69D10061EC97 /* login_success.json in Resources */ = {isa = PBXBuildFile; fileRef = 4944F0C71F6B69D10061EC97 /* login_success.json */; };
 		4944F0CF1F6B6A950061EC97 /* AuthenticatedNetworkCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4944F0C91F6B6A950061EC97 /* AuthenticatedNetworkCall.swift */; };
 		4944F0D01F6B6A950061EC97 /* ExampleServerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4944F0CA1F6B6A950061EC97 /* ExampleServerConfiguration.swift */; };
 		4944F0D11F6B6A950061EC97 /* LoginNetworkCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4944F0CB1F6B6A950061EC97 /* LoginNetworkCall.swift */; };
@@ -15,11 +14,12 @@
 		4944F0D31F6B6A950061EC97 /* ResponseObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4944F0CD1F6B6A950061EC97 /* ResponseObject.swift */; };
 		4944F0D41F6B6A950061EC97 /* ServerObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4944F0CE1F6B6A950061EC97 /* ServerObject.swift */; };
 		4944F0D81F6B6CA10061EC97 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4944F0D71F6B6CA10061EC97 /* AuthManager.swift */; };
-		495EE5F41F82C76C00ACF1D7 /* login_fail.json in Resources */ = {isa = PBXBuildFile; fileRef = 495EE5F31F82C76C00ACF1D7 /* login_fail.json */; };
 		49E378452004270500E0DA3D /* NetworkCallTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E378442004270500E0DA3D /* NetworkCallTests.swift */; };
 		49E378472004271E00E0DA3D /* StubbableNetworkCallTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E378462004271E00E0DA3D /* StubbableNetworkCallTests.swift */; };
 		49E378492004273200E0DA3D /* JsonNetworkCallTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E378482004273200E0DA3D /* JsonNetworkCallTests.swift */; };
 		49E3784B200432DA00E0DA3D /* .travis.yml in Resources */ = {isa = PBXBuildFile; fileRef = 49E3784A200432DA00E0DA3D /* .travis.yml */; };
+		49ED8099205838B900A30F5B /* login_fail.json in Resources */ = {isa = PBXBuildFile; fileRef = 495EE5F31F82C76C00ACF1D7 /* login_fail.json */; };
+		49ED809C20583C5000A30F5B /* login_success.json in Resources */ = {isa = PBXBuildFile; fileRef = 4944F0C71F6B69D10061EC97 /* login_success.json */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
@@ -306,9 +306,8 @@
 				49E3784B200432DA00E0DA3D /* .travis.yml in Resources */,
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
-				495EE5F41F82C76C00ACF1D7 /* login_fail.json in Resources */,
+				49ED809C20583C5000A30F5B /* login_success.json in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
-				4944F0C81F6B69D10061EC97 /* login_success.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,6 +315,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49ED8099205838B900A30F5B /* login_fail.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
