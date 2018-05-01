@@ -17,6 +17,56 @@ class JsonNetworkCallTests: XCTestCase {
     static let endpoint = "tasks"
     let stubConfig = ServerConfiguration(shouldStub: true, scheme: scheme, host: host, apiRoute: apiRoute)
     
+    func testCustomHeaders() {
+        let successfulStub = StubHolder(responseCode: 200, stubData: "{\"success\": true}".data(using: String.Encoding.utf8))
+        
+        let headers = ["Custom": "header"]
+        let call = NetCall(configuration: stubConfig, httpMethod: "PUT", httpHeaders: headers, endpoint: "sessions", postData: responseJsonString.data(using: String.Encoding.utf8), stubHolder: successfulStub)
+        
+        let requestHeaders = call.mutableRequest().allHTTPHeaderFields!
+        
+        let success = requestHeaders == ["Custom": "header", "Content-Type": "application/json", "Accept": "application/json"]
+        
+        if !success {
+            boolToString(success)
+            XCTAssertTrue(success)
+        } else {
+            let passStubCondition: ((URLRequest) -> Bool) = {
+                $0.url?.absoluteString == call.urlString(call.endpoint) && $0.allHTTPHeaderFields! == headers
+            }
+            let passStubDesc = stub(condition: passStubCondition) { _ in
+                let stubData = "{}".data(using: String.Encoding.utf8)
+                return OHHTTPStubsResponse(data: stubData!, statusCode:200, headers:nil)
+            }
+            let failStubCondition: ((URLRequest) -> Bool) = {
+                $0.url?.absoluteString == call.urlString(call.endpoint) && $0.allHTTPHeaderFields! != headers
+            }
+            let failStubDesc = stub(condition: failStubCondition) { _ in
+                let stubData = "{}".data(using: String.Encoding.utf8)
+                return OHHTTPStubsResponse(data: stubData!, statusCode:403, headers:nil)
+            }
+            
+            let expectation = XCTestExpectation(description: "")
+            
+            call.jsonSignal.observeValues({ json in
+                XCTAssertTrue(true)
+                var res = true
+                
+                OHHTTPStubs.removeStub(passStubDesc)
+                OHHTTPStubs.removeStub(failStubDesc)
+                
+                boolToString(res)
+                
+                XCTAssert(res)
+                
+                expectation.fulfill()
+            })
+            call.fire()
+            
+            self.wait(for: [expectation], timeout: 5.0)
+        }
+    }
+    
     func testHeaders() {
         let successfulStub = StubHolder(responseCode: 200, stubData: "{\"success\": true}".data(using: String.Encoding.utf8))
         let call = NetCall(configuration: stubConfig, httpMethod: "PUT", endpoint: "sessions", postData: responseJsonString.data(using: String.Encoding.utf8), stubHolder: successfulStub)

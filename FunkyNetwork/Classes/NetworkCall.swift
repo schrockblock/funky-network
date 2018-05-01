@@ -9,6 +9,7 @@
 import UIKit
 import ReactiveSwift
 import Result
+import Prelude
 
 open class NetworkCall {
     public let configuration: ServerConfigurationProtocol
@@ -62,33 +63,49 @@ open class NetworkCall {
     }
     
     open func mutableRequest() -> NSMutableURLRequest {
-        let mutableRequest = NSMutableURLRequest()
-        mutableRequest.url = url(endpoint)
-        
+        return endpoint |> requestForEndpoint()
+    }
+    
+    open func requestForEndpoint() -> ((String) -> NSMutableURLRequest) {
+        return (NSMutableURLRequest.init <<< url) >>> applyHeaders >>> applyHttpMethod >>> applyBody
+    }
+    
+    open func url(_ endpoint: String) -> URL {
+        return (endpoint |> (URL.init(string:) <<< urlString))!
+    }
+    
+    open func urlString(_ endpoint: String) -> String {
+        return (configuration |> NetworkCall.configurationToBaseUrlString) + endpoint
+    }
+    
+    open static func configurationToBaseUrlString(_ configuration: ServerConfigurationProtocol) -> String {
+        let baseUrlString = "\(configuration.scheme)://\(configuration.host)"
+        if let apiRoute = configuration.apiBaseRoute {
+            return "\(baseUrlString)/\(apiRoute)/"
+        } else {
+            return "\(baseUrlString)/"
+        }
+    }
+    
+    open func applyHeaders(_ request: NSURLRequest) -> NSMutableURLRequest {
+        let mutableRequest = request.mutableCopy() as! NSMutableURLRequest
         if let headers = httpHeaders {
             for key in headers.keys {
                 mutableRequest.addValue(headers[key]!, forHTTPHeaderField: key)
             }
         }
-        
-        mutableRequest.httpMethod = httpMethod
-        if httpMethod != "GET" {
-            mutableRequest.httpBody = postData
-        }
-        
         return mutableRequest
     }
     
-    open func url(_ endpoint: String) -> URL? {
-        return URL(string: urlString(endpoint))
+    open func applyHttpMethod(_ request: NSURLRequest) -> NSMutableURLRequest {
+        let mutableRequest = request.mutableCopy() as! NSMutableURLRequest
+        mutableRequest.httpMethod = httpMethod
+        return mutableRequest
     }
     
-    open func urlString(_ endpoint: String) -> String {
-        let baseUrlString = "\(configuration.scheme)://\(configuration.host)"
-        if let apiRoute = configuration.apiBaseRoute {
-            return "\(baseUrlString)/\(apiRoute)/\(endpoint)"
-        } else {
-            return "\(baseUrlString)/\(endpoint)"
-        }
+    open func applyBody(_ request: NSURLRequest) -> NSMutableURLRequest {
+        let mutableRequest = request.mutableCopy() as! NSMutableURLRequest
+        mutableRequest.httpBody = postData
+        return mutableRequest
     }
 }

@@ -165,8 +165,8 @@ class JsonNetworkCallTests: XCTestCase {
     }
     
     func testHeaders() {
-        handleDefaultCall(headers: ["Content-Type": "application/json"])
-        handleDefaultCall(headers: ["Content-Type": "application/json", "Custom-Header": "blah blah blah"])
+        handleDefaultCall(headers: [:])
+        handleDefaultCall(headers: ["Custom-Header": "blah blah blah"])
     }
     
     func handleDefaultCall(headers: Dictionary<String, String>) {
@@ -174,7 +174,7 @@ class JsonNetworkCallTests: XCTestCase {
         
         let requestHeaders = call.mutableRequest().allHTTPHeaderFields!
         
-        let success = requestHeaders == headers
+        let success = requestHeaders["Content-Type"] == "application/json" && requestHeaders["Accept"] == "application/json"
         
         if !success {
             XCTAssert(success)

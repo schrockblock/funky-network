@@ -31,7 +31,7 @@ class StubbableNetworkCallTests: XCTestCase {
         let unsuccessfulStub = StubHolder(responseCode: 500, stubData: "{}".data(using: String.Encoding.utf8))
         
         handleStubbableCall(stubHolder: unsuccessfulStub) { (unSuccess) in
-            boolToString(!unSuccess)
+            boolToString(!unSuccess) 
             
             XCTAssertTrue(!unSuccess)
             

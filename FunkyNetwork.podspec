@@ -28,4 +28,5 @@ FunkyNetwork provides a foundation for reusable functional networking in Swift. 
   # s.frameworks = 'UIKit', 'MapKit'
   s.dependency 'ReactiveSwift'
   s.dependency 'OHHTTPStubs/Swift'
+  s.dependency 'Prelude', '~> 3.0'
 end

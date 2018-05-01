@@ -1,26 +1,28 @@
 PODS:
-  - Eson (0.3.4)
-  - FunkyNetwork (0.0.2):
+  - Eson (0.4.2)
+  - FunkyNetwork (0.1.4):
     - OHHTTPStubs/Swift
-    - ReactiveSwift (~> 2.0)
-  - Nimble (7.0.1)
-  - OHHTTPStubs/Core (6.0.0)
-  - OHHTTPStubs/Default (6.0.0):
+    - Prelude (~> 3.0)
+    - ReactiveSwift
+  - Nimble (7.0.3)
+  - OHHTTPStubs/Core (6.1.0)
+  - OHHTTPStubs/Default (6.1.0):
     - OHHTTPStubs/Core
     - OHHTTPStubs/JSON
     - OHHTTPStubs/NSURLSession
     - OHHTTPStubs/OHPathHelpers
-  - OHHTTPStubs/JSON (6.0.0):
+  - OHHTTPStubs/JSON (6.1.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/NSURLSession (6.0.0):
+  - OHHTTPStubs/NSURLSession (6.1.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/OHPathHelpers (6.0.0)
-  - OHHTTPStubs/Swift (6.0.0):
+  - OHHTTPStubs/OHPathHelpers (6.1.0)
+  - OHHTTPStubs/Swift (6.1.0):
     - OHHTTPStubs/Default
+  - Prelude (3.0.0)
   - Quick (1.1.0)
-  - ReactiveSwift (2.0.1):
+  - ReactiveSwift (3.1.0):
     - Result (~> 3.2)
-  - Result (3.2.3)
+  - Result (3.2.4)
 
 DEPENDENCIES:
   - Eson (from `https://github.com/schrockblock/eson`)
@@ -33,22 +35,23 @@ EXTERNAL SOURCES:
   Eson:
     :git: https://github.com/schrockblock/eson
   FunkyNetwork:
-    :path: "../"
+    :path: ../
 
 CHECKOUT OPTIONS:
   Eson:
-    :commit: 253778b5a35cdd457348c425dc5438f7839b8d7c
+    :commit: e4967beecfc1204401e870aed308d7e241c20bfb
     :git: https://github.com/schrockblock/eson
 
 SPEC CHECKSUMS:
-  Eson: 5beaedf5ac885d9b427602f487ed920b54d43c3c
-  FunkyNetwork: 8bdc3e2c020b571d68335f5eeaeeb2789ee6a99c
-  Nimble: 657d000e11df8aebe27cdaf9d244de7f30ed87f7
-  OHHTTPStubs: 752f9b11fd810a15162d50f11c06ff94f8e012eb
+  Eson: e9f877c2b4f39cd71483524dd3443d379b4a1d4f
+  FunkyNetwork: 331ac2cd5bf3501698944f5b338430e195c547b6
+  Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
+  OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
+  Prelude: fe4cc0fd961d34edf48fe6b04d05c863449efb0a
   Quick: dafc587e21eed9f4cab3249b9f9015b0b7a7f71d
-  ReactiveSwift: 60a29ff35988a964fd2bb759755cb6594de523fc
-  Result: 128640a6347e8d2ae48b142556739a2d13f90ce6
+  ReactiveSwift: 5b26d2e988fe0eed2daf48c4054d1de74db50184
+  Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
 
 PODFILE CHECKSUM: 590498b9928ad132b251bd8bcfb02738ca621b87
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.4.0
