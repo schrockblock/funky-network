@@ -53,7 +53,7 @@ open class NetworkCall {
     }
     
     open func fire() {
-        let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: OperationQueue.main)
+        let session = URLSession(configuration: configuration.urlConfiguration, delegate: nil, delegateQueue: OperationQueue.main)
         let request = self.mutableRequest()
         dataTaskProperty.value = session.dataTask(with: request as URLRequest) { (data, response, error) in
             self.errorProperty.value = error as NSError?
