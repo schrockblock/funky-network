@@ -59,6 +59,7 @@ open class NetworkCall {
             self.errorProperty.value = error as NSError?
             self.responseProperty.value = response
             self.dataProperty.value = data
+            session.finishTasksAndInvalidate()
         }
     }
     
