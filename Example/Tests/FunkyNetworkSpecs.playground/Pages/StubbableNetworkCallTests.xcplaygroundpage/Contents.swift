@@ -161,7 +161,7 @@ class NetworkCallTests: XCTestCase {
     func handleDefaultCall(headers: Dictionary<String, String>, checker: @escaping ((_ success: Bool) -> Void)) {
         let call = NetCall(configuration: stubConfig, httpMethod: "GET", httpHeaders: headers, endpoint: NetworkCallTests.endpoint, postData: nil)
         
-        let requestHeaders = call.mutableRequest().allHTTPHeaderFields!
+        let requestHeaders = call.mutableRequest()?.allHTTPHeaderFields!
         
         let success = requestHeaders == headers
         
@@ -205,7 +205,7 @@ class NetworkCallTests: XCTestCase {
     func handleDefaultCall(config: ServerConfiguration, urlString: String, checker: @escaping ((_ success: Bool) -> Void)) {
         let call = NetCall(configuration: config, httpMethod: "GET", httpHeaders: nil, endpoint: NetworkCallTests.endpoint, postData: nil)
         
-        let success = call.mutableRequest().url?.absoluteString == urlString
+        let success = call.mutableRequest()?.url?.absoluteString == urlString
         
         if !success {
             checker(success)
@@ -247,7 +247,7 @@ class NetworkCallTests: XCTestCase {
     func handleDefaultCall(method: String, checker: @escaping ((_ success: Bool) -> Void)) {
         let call = NetCall(configuration: stubConfig, httpMethod: method, httpHeaders: nil, endpoint: NetworkCallTests.endpoint, postData: nil)
         
-        let success = call.mutableRequest().httpMethod == method
+        let success = call.mutableRequest()?.httpMethod == method
         
         if !success {
             checker(success)

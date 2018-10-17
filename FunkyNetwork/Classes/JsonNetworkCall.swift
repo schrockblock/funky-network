@@ -15,8 +15,8 @@ open class JsonNetworkCall: StubbableNetworkCall {
     public lazy var jsonSignal: Signal<Any, NoError> = self.dataSignal.skipNil().map(JsonDataHandler.serialize)
 
     public override init(configuration: ServerConfigurationProtocol, httpMethod: String, httpHeaders: Dictionary<String, String>? = nil, endpoint: String, postData: Data?,
-                         stubHolder: StubHolderProtocol? = nil) {
-        super.init(configuration: configuration, httpMethod: httpMethod, httpHeaders: httpHeaders |> JsonNetworkCall.addJsonHeaders, endpoint: endpoint, postData: postData, stubHolder: stubHolder)
+                         networkErrorHandler: NetworkErrorHandler? = nil, stubHolder: StubHolderProtocol? = nil) {
+        super.init(configuration: configuration, httpMethod: httpMethod, httpHeaders: httpHeaders |> JsonNetworkCall.addJsonHeaders, endpoint: endpoint, postData: postData, networkErrorHandler: networkErrorHandler, stubHolder: stubHolder)
     }
     
     open class func jsonHeaders() -> Dictionary<String, String> {

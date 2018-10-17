@@ -17,9 +17,10 @@ class JsonNetworkCallTests: XCTestCase {
         let call = NetCall(configuration: stubConfig, httpMethod: "PUT", endpoint: "sessions", postData: responseJsonString.data(using: String.Encoding.utf8), stubHolder: successfulStub)
         
         let headers = ["Content-Type": "application/json", "Accept": "application/json"]
-        let requestHeaders = call.mutableRequest().allHTTPHeaderFields!
-        
-        let success = requestHeaders == headers
+        var success = false
+        if let requestHeaders = call.mutableRequest()?.allHTTPHeaderFields {
+            success = dictContainsDict(container: requestHeaders, dict: headers)
+        }
         
         if !success {
             XCTAssert(success)
@@ -125,6 +126,59 @@ class JsonNetworkCallTests: XCTestCase {
         call.fire()
     }
     
+    func testEmptyErrorHandler() {
+        let expectation = XCTestExpectation(description: "")
+        
+        let call = NetCall(configuration: stubConfig, httpMethod: "GET", httpHeaders: ["Content-Type": "application/json"], endpoint: NetworkCallTests.endpoint, postData: nil, networkErrorHandler: FalsyNetworkErrorHandler())
+        
+        let failStubCondition: ((URLRequest) -> Bool) = {
+            $0.url?.absoluteString == call.urlString(call.endpoint)
+        }
+        let failStubDesc = stub(condition: failStubCondition) { _ in
+            let stubData = "{}".data(using: String.Encoding.utf8)
+            return OHHTTPStubsResponse(data: stubData!, statusCode:403, headers:nil)
+        }
+        
+        call.serverErrorSignal.observeValues { error in
+            XCTAssertEqual(Int32(error.code), 403)
+            OHHTTPStubs.removeStub(failStubDesc)
+            expectation.fulfill()
+        }
+        
+        call.fire()
+        
+        self.wait(for: [expectation], timeout: 5.0)
+    }
+    
+    func testFullErrorHandler() {
+        let expectation = XCTestExpectation(description: "")
+        
+        let call = NetCall(configuration: stubConfig, httpMethod: "GET", httpHeaders: ["Content-Type": "application/json"], endpoint: NetworkCallTests.endpoint, postData: nil, networkErrorHandler: TruthyNetworkErrorHandler())
+        
+        let failStubCondition: ((URLRequest) -> Bool) = {
+            $0.url?.absoluteString == call.urlString(call.endpoint)
+        }
+        let failStubDesc = stub(condition: failStubCondition) { _ in
+            let stubData = "{}".data(using: String.Encoding.utf8)
+            return OHHTTPStubsResponse(data: stubData!, statusCode:403, headers:nil)
+        }
+        
+        call.serverErrorSignal.observeValues { error in
+            XCTAssert(false)
+            OHHTTPStubs.removeStub(failStubDesc)
+            expectation.fulfill()
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+            OHHTTPStubs.removeStub(failStubDesc)
+            expectation.fulfill()
+        }
+        
+        call.fire()
+        
+        self.wait(for: [expectation], timeout: 0.250)
+    }
+    
     func testCorrectUrl() {
         handleDefaultCall(config: stubConfig, urlString: "https://habitica.com/api/v1/tasks")
     }
@@ -165,16 +219,16 @@ class JsonNetworkCallTests: XCTestCase {
     }
     
     func testHeaders() {
-        handleDefaultCall(headers: [:])
         handleDefaultCall(headers: ["Custom-Header": "blah blah blah"])
     }
     
     func handleDefaultCall(headers: Dictionary<String, String>) {
         let call = NetCall(configuration: stubConfig, httpMethod: "GET", httpHeaders: headers, endpoint: NetworkCallTests.endpoint, postData: nil)
         
-        let requestHeaders = call.mutableRequest().allHTTPHeaderFields!
-        
-        let success = requestHeaders["Content-Type"] == "application/json" && requestHeaders["Accept"] == "application/json"
+        var success = false
+        if let requestHeaders = call.mutableRequest()?.allHTTPHeaderFields {
+            success = dictContainsDict(container: requestHeaders, dict: headers)
+        }
         
         if !success {
             XCTAssert(success)
@@ -211,7 +265,7 @@ class JsonNetworkCallTests: XCTestCase {
     func handleDefaultCall(config: ServerConfiguration, urlString: String) {
         let call = NetCall(configuration: config, httpMethod: "GET", httpHeaders: nil, endpoint: NetworkCallTests.endpoint, postData: nil)
         
-        let success = call.mutableRequest().url?.absoluteString == urlString
+        let success = call.mutableRequest()?.url?.absoluteString == urlString
         
         if !success {
             XCTAssert(success)
@@ -248,7 +302,7 @@ class JsonNetworkCallTests: XCTestCase {
     func handleDefaultCall(method: String) {
         let call = NetCall(configuration: stubConfig, httpMethod: method, httpHeaders: nil, endpoint: NetworkCallTests.endpoint, postData: nil)
         
-        let success = call.mutableRequest().httpMethod == method
+        let success = call.mutableRequest()?.httpMethod == method
         
         if !success {
             XCTAssert(success)
@@ -281,4 +335,23 @@ class JsonNetworkCallTests: XCTestCase {
             self.wait(for: [expectation], timeout: 5.0)
         }
     }
+}
+
+func dictContainsDict(container: [String: String], dict: [String: String]) -> Bool {
+    var success = false
+    
+    for key in dict.keys {
+        if let value = container[key] {
+            if value == dict[key] {
+                success = true
+            } else {
+                success = false
+                break
+            }
+        } else {
+            success = false
+            break
+        }
+    }
+    return success
 }

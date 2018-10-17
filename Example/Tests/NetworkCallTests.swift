@@ -2,6 +2,21 @@ import XCTest
 import OHHTTPStubs
 @testable import FunkyNetwork
 
+class FalsyNetworkErrorHandler: DefaultNetworkErrorHandler {
+    override func errorMessageForCode(_ code: Int) -> ErrorMessage? {
+        return nil
+    }
+}
+class TruthyNetworkErrorHandler: DefaultNetworkErrorHandler {
+    override func handleErrorCode(_ code: Int) -> Bool {
+        return true
+    }
+    
+    override func handleError(_ error: NSError) -> Bool {
+        return true
+    }
+}
+
 class NetworkCallTests: XCTestCase {
     typealias NetCall = NetworkCall
     
@@ -56,6 +71,59 @@ class NetworkCallTests: XCTestCase {
         handleDefaultCall(headers: ["Content-Type": "application/json", "Custom-Header": "blah blah blah"])
     }
     
+    func testEmptyErrorHandler() {
+        let expectation = XCTestExpectation(description: "")
+        
+        let call = NetCall(configuration: stubConfig, httpMethod: "GET", httpHeaders: ["Content-Type": "application/json"], endpoint: NetworkCallTests.endpoint, postData: nil, networkErrorHandler: FalsyNetworkErrorHandler())
+        
+        let failStubCondition: ((URLRequest) -> Bool) = {
+            $0.url?.absoluteString == call.urlString(call.endpoint)
+        }
+        let failStubDesc = stub(condition: failStubCondition) { _ in
+            let stubData = "{}".data(using: String.Encoding.utf8)
+            return OHHTTPStubsResponse(data: stubData!, statusCode:403, headers:nil)
+        }
+        
+        call.serverErrorSignal.observeValues { error in
+            XCTAssertEqual(Int32(error.code), 403)
+            OHHTTPStubs.removeStub(failStubDesc)
+            expectation.fulfill()
+        }
+        
+        call.fire()
+        
+        self.wait(for: [expectation], timeout: 5.0)
+    }
+    
+    func testFullErrorHandler() {
+        let expectation = XCTestExpectation(description: "")
+        
+        let call = NetCall(configuration: stubConfig, httpMethod: "GET", httpHeaders: ["Content-Type": "application/json"], endpoint: NetworkCallTests.endpoint, postData: nil, networkErrorHandler: TruthyNetworkErrorHandler())
+        
+        let failStubCondition: ((URLRequest) -> Bool) = {
+            $0.url?.absoluteString == call.urlString(call.endpoint)
+        }
+        let failStubDesc = stub(condition: failStubCondition) { _ in
+            let stubData = "{}".data(using: String.Encoding.utf8)
+            return OHHTTPStubsResponse(data: stubData!, statusCode:403, headers:nil)
+        }
+        
+        call.serverErrorSignal.observeValues { error in
+            XCTAssert(false)
+            OHHTTPStubs.removeStub(failStubDesc)
+            expectation.fulfill()
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+            OHHTTPStubs.removeStub(failStubDesc)
+            expectation.fulfill()
+        }
+        
+        call.fire()
+        
+        self.wait(for: [expectation], timeout: 0.250)
+    }
+    
     func testServerError() {
         let expectation = XCTestExpectation(description: "")
         
@@ -83,9 +151,10 @@ class NetworkCallTests: XCTestCase {
     func handleDefaultCall(headers: Dictionary<String, String>) {
         let call = NetCall(configuration: stubConfig, httpMethod: "GET", httpHeaders: headers, endpoint: NetworkCallTests.endpoint, postData: nil)
         
-        let requestHeaders = call.mutableRequest().allHTTPHeaderFields!
-        
-        let success = requestHeaders == headers
+        var success = false
+        if let requestHeaders = call.mutableRequest()?.allHTTPHeaderFields {
+            success = dictContainsDict(container: requestHeaders, dict: headers)
+        }
         
         if !success {
             XCTAssert(success)
@@ -122,7 +191,7 @@ class NetworkCallTests: XCTestCase {
     func handleDefaultCall(config: ServerConfiguration, urlString: String) {
         let call = NetCall(configuration: config, httpMethod: "GET", httpHeaders: nil, endpoint: NetworkCallTests.endpoint, postData: nil)
         
-        let success = call.mutableRequest().url?.absoluteString == urlString
+        let success = call.mutableRequest()?.url?.absoluteString == urlString
         
         if !success {
             XCTAssert(success)
@@ -159,7 +228,7 @@ class NetworkCallTests: XCTestCase {
     func handleDefaultCall(method: String) {
         let call = NetCall(configuration: stubConfig, httpMethod: method, httpHeaders: nil, endpoint: NetworkCallTests.endpoint, postData: nil)
         
-        let success = call.mutableRequest().httpMethod == method
+        let success = call.mutableRequest()?.httpMethod == method
         
         if !success {
             XCTAssert(success)

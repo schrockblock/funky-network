@@ -5,6 +5,21 @@ import OHHTTPStubs
 
 typealias NetCall = NetworkCall
 
+class FalsyNetworkErrorHandler: DefaultNetworkErrorHandler {
+    override func errorMessageForCode(_ code: Int) -> ErrorMessage? {
+        return nil
+    }
+}
+class TruthyNetworkErrorHandler: DefaultNetworkErrorHandler {
+    open func handleErrorCode(_ code: Int) -> Bool {
+        return true
+    }
+    
+    open func handleError(_ error: NSError) -> Bool {
+        return true
+    }
+}
+
 class NetworkCallTests: XCTestCase {
     let responseJsonString = "{}"
     static let scheme = "https"
@@ -89,7 +104,7 @@ class NetworkCallTests: XCTestCase {
         }
         let failStubDesc = stub(condition: failStubCondition) { _ in
             let stubData = "{}".data(using: String.Encoding.utf8)
-            return OHHTTPStubsResponse(data: stubData!, statusCode:403, headers:nil)
+            return OHHTTPStubsResponse(data: stubData!, statusCode: 403, headers:nil)
         }
         
         call.serverErrorSignal.observeValues { error in
@@ -192,7 +207,7 @@ class NetworkCallTests: XCTestCase {
     func handleDefaultCall(method: String, checker: @escaping ((_ success: Bool) -> Void)) {
         let call = NetCall(configuration: stubConfig, httpMethod: method, httpHeaders: nil, endpoint: NetworkCallTests.endpoint, postData: nil)
         
-        let success = call.mutableRequest().httpMethod == method
+        let success = call.mutableRequest()?.httpMethod == method
         
         if !success {
             checker(success)

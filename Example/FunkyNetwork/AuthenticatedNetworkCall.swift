@@ -12,8 +12,8 @@ import FunkyNetwork
 open class AuthenticatedNetworkCall: JsonNetworkCall {
     fileprivate static let apiKeyHeader = "Auth"
     
-    public override init(configuration: ServerConfigurationProtocol, httpMethod: String, httpHeaders: Dictionary<String, String>?, endpoint: String, postData: Data?, stubHolder: StubHolderProtocol?) {
-        super.init(configuration: configuration, httpMethod: httpMethod, httpHeaders: AuthenticatedNetworkCall.jsonHeaders(), endpoint: endpoint, postData: postData, stubHolder: stubHolder)
+    public override init(configuration: ServerConfigurationProtocol, httpMethod: String, httpHeaders: Dictionary<String, String>?, endpoint: String, postData: Data?, networkErrorHandler: NetworkErrorHandler? = nil, stubHolder: StubHolderProtocol?) {
+        super.init(configuration: configuration, httpMethod: httpMethod, httpHeaders: AuthenticatedNetworkCall.jsonHeaders(), endpoint: endpoint, postData: postData, networkErrorHandler: networkErrorHandler, stubHolder: stubHolder)
     }
     
     open static override func jsonHeaders() -> Dictionary<String, String> {

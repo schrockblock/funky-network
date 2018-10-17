@@ -15,8 +15,10 @@ public protocol ErrorMessage {
 }
 
 public protocol NetworkErrorHandler {
-    static var errorMessages: [ErrorMessage]? { get }
-    static func handleError(error: NSError) -> Bool
+    var errorMessages: [ErrorMessage]? { get }
+    func handleError(_ error: NSError) -> Bool
+    func handleErrorCode(_ code: Int) -> Bool
+    func errorMessageForCode(_ code: Int) -> ErrorMessage?
 }
 
 public struct DefaultServerUnavailableErrorMessage: ErrorMessage {
@@ -37,18 +39,38 @@ public struct DefaultOfflineErrorMessage: ErrorMessage {
     public let forCode: Int = -1009
 }
 
+public struct DefaultUsernamePasswordLoginErrorMessage: ErrorMessage {
+    public let title: String = "Oops!"
+    public let message: String = "Looks like your username or password is incorrect. Try again!"
+    public let forCode: Int = 401
+}
+
+public struct DefaultEmailPasswordLoginErrorMessage: ErrorMessage {
+    public let title: String = "Oops!"
+    public let message: String = "Looks like your email or password is incorrect. Try again!"
+    public let forCode: Int = 401
+}
+
 public class DefaultNetworkErrorHandler: NetworkErrorHandler {
-    public static let errorMessages: [ErrorMessage]? = [DefaultServerUnavailableErrorMessage(), DefaultServerIssueErrorMessage(), DefaultOfflineErrorMessage()]
+    public var errorMessages: [ErrorMessage]? = [DefaultServerUnavailableErrorMessage(), DefaultServerIssueErrorMessage(), DefaultOfflineErrorMessage()]
     
-    public static func handleError(error: NSError) -> Bool {
-        if let errorMessage = errorMessageForCode(code: error.code) {
+    open func handleError(_ error: NSError) -> Bool {
+        if let errorMessage = errorMessageForCode(error.code) {
             self.notify(title: errorMessage.title, message: errorMessage.message)
             return true
         }
         return false
     }
     
-    static func errorMessageForCode(code: Int) -> ErrorMessage? {
+    open func handleErrorCode(_ code: Int) -> Bool {
+        if let errorMessage = errorMessageForCode(code) {
+            self.notify(title: errorMessage.title, message: errorMessage.message)
+            return true
+        }
+        return false
+    }
+    
+    open func errorMessageForCode(_ code: Int) -> ErrorMessage? {
         if let messages = self.errorMessages {
             for errorMessage in messages {
                 if code == errorMessage.forCode {
@@ -59,7 +81,7 @@ public class DefaultNetworkErrorHandler: NetworkErrorHandler {
         return nil
     }
     
-    public static func notify(title: String, message: String) {
+    open func notify(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)

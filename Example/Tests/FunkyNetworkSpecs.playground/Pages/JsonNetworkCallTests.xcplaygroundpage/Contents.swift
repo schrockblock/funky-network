@@ -260,9 +260,9 @@ class NetworkCallTests: XCTestCase {
         handleDefaultCall(headers: ["Content-Type": "application/json"], checker: {
             success in let result = boolToString(success)
         })
-        handleDefaultCall(headers: ["Content-Type": "application/json", "Custom-Header": "blah blah blah"], checker: {
-            success in let result = boolToString(success)
-        })
+//        handleDefaultCall(headers: ["Content-Type": "application/json", "Custom-Header": "blah blah blah"], checker: {
+//            success in let result = boolToString(success)
+//        })
     }
     
     func handleDefaultCall(headers: Dictionary<String, String>, checker: @escaping ((_ success: Bool) -> Void)) {
@@ -270,7 +270,7 @@ class NetworkCallTests: XCTestCase {
         
         let requestHeaders = call.mutableRequest().allHTTPHeaderFields!
         
-        let success = requestHeaders == headers
+        var success = dictContainsDict(container: requestHeaders, dict: headers)
         
         if !success {
             checker(success)
@@ -398,3 +398,20 @@ func boolToString(_ success: Bool) -> String {
     return success ? "✅" : "❌"
 }
 
+func dictContainsDict(container: [String: String], dict: [String: String]) -> Bool {
+    var success = false
+    for (key in dict.allKeys) {
+        if let value = container[key] {
+            if value == dict[key] {
+                success = true
+            } else {
+                success = false
+                break
+            }
+        } else {
+            success = false
+            break
+        }
+    }
+    return success
+}

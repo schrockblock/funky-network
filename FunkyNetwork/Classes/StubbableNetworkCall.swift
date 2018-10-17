@@ -13,10 +13,10 @@ import ReactiveSwift
 open class StubbableNetworkCall: NetworkCall {
     public let stubHolder: StubHolderProtocol?
     
-    public init(configuration: ServerConfigurationProtocol, httpMethod: String, httpHeaders: Dictionary<String, String>?, endpoint: String, postData: Data?, stubHolder: StubHolderProtocol? = nil) {
+    public init(configuration: ServerConfigurationProtocol, httpMethod: String, httpHeaders: Dictionary<String, String>?, endpoint: String, postData: Data?, networkErrorHandler: NetworkErrorHandler? = nil, stubHolder: StubHolderProtocol? = nil) {
         self.stubHolder = stubHolder
         
-        super.init(configuration: configuration, httpMethod: httpMethod, httpHeaders: httpHeaders, endpoint: endpoint, postData: postData)
+        super.init(configuration: configuration, httpMethod: httpMethod, httpHeaders: httpHeaders, endpoint: endpoint, postData: postData, networkErrorHandler: networkErrorHandler)
     }
     
     open override func fire() {
