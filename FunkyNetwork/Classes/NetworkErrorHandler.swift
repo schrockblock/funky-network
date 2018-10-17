@@ -82,7 +82,7 @@ public class DefaultNetworkErrorHandler: NetworkErrorHandler {
     }
     
     open func notify(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
         }))
@@ -95,7 +95,7 @@ extension UIAlertController {
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = UIViewController()
         window.backgroundColor = UIColor.clear
-        window.windowLevel = UIWindowLevelAlert
+        window.windowLevel = UIWindow.Level.alert
         
         if let rootViewController = window.rootViewController {
             window.makeKeyAndVisible()
