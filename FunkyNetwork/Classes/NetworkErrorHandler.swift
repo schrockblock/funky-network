@@ -25,34 +25,48 @@ public struct DefaultServerUnavailableErrorMessage: ErrorMessage {
     public let title: String = "Ruh Roh"
     public let message: String = "The server is unavailable! Try again in a bit. If this keeps happening, please let us know!"
     public let forCode: Int = 503
+    
+    public init() {}
 }
 
 public struct DefaultServerIssueErrorMessage: ErrorMessage {
     public let title: String = "Ruh Roh"
     public let message: String = "Looks like we're having a problem. Please let us know about it!"
     public let forCode: Int = 500
+    
+    public init() {}
 }
 
 public struct DefaultOfflineErrorMessage: ErrorMessage {
     public let title: String = "Hmmm..."
     public let message: String = "Looks like you're offline. Try reconnecting to the internet!"
     public let forCode: Int = -1009
+    
+    public init() {}
 }
 
 public struct DefaultUsernamePasswordLoginErrorMessage: ErrorMessage {
     public let title: String = "Oops!"
     public let message: String = "Looks like your username or password is incorrect. Try again!"
     public let forCode: Int = 401
+    
+    public init() {}
 }
 
 public struct DefaultEmailPasswordLoginErrorMessage: ErrorMessage {
     public let title: String = "Oops!"
     public let message: String = "Looks like your email or password is incorrect. Try again!"
     public let forCode: Int = 401
+    
+    public init() {}
 }
 
-public class DefaultNetworkErrorHandler: NetworkErrorHandler {
-    public var errorMessages: [ErrorMessage]? = [DefaultServerUnavailableErrorMessage(), DefaultServerIssueErrorMessage(), DefaultOfflineErrorMessage()]
+open class DefaultNetworkErrorHandler: NetworkErrorHandler {
+    public var errorMessages: [ErrorMessage]?
+    
+    public init(errorMessages: [ErrorMessage]? = [DefaultServerUnavailableErrorMessage(), DefaultServerIssueErrorMessage(), DefaultOfflineErrorMessage()]) {
+        self.errorMessages = errorMessages
+    }
     
     open func handleError(_ error: NSError) -> Bool {
         if let errorMessage = errorMessageForCode(error.code) {
