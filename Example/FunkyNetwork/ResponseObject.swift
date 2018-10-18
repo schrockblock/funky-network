@@ -7,13 +7,8 @@
 //
 
 import UIKit
-import Eson
 
-open class ResponseObject<T: NSObject>: NSObject {
+open class ResponseObject<T: Decodable>: Decodable {
     var success: Bool = false
-    var data: [String: AnyObject]?
-    
-    func dataObject() -> T? {
-        return Eson().fromJsonDictionary(data, clazz: T.self)
-    }
+    var data: T?
 }

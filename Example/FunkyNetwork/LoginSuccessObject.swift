@@ -8,7 +8,7 @@
 
 import UIKit
 
-open class LoginSuccessObject: ServerObject {
+open class LoginSuccessObject: ServerObject, Decodable {
     var newUser: Bool = false
     var apiToken: String?
 }

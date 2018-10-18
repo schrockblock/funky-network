@@ -17,7 +17,6 @@ class LoginSpec: QuickSpec {
                         call.loginSuccessObjectSignal.observeValues({ successObject in
                             expect(successObject).toNot(beNil())
                             if let success = successObject {
-                                expect(success.objectId).toNot(beNil())
                                 expect(success.apiToken).toNot(beNil())
                             }
                             done()
