@@ -5,11 +5,10 @@ target 'FunkyNetwork_Example' do
   pod 'FunkyNetwork', :path => '../'
 end
 
-
 target 'FunkyNetwork_Tests' do
     pod 'FunkyNetwork', :path => '../'
     
-    pod 'Quick', '~> 1.1.0'
-    pod 'Nimble', '~> 7.0.0'
+    pod 'Quick', '~> 1.3.0'
+    pod 'Nimble', '~> 7.3.0'
     pod 'OHHTTPStubs/Swift'
 end
